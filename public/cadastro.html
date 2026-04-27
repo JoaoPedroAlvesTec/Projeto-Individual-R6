@@ -6,53 +6,61 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>R6 FORUM | Cadastro</title>
+  <title>R6 | Cadastro</title>
 
   <script src="./js/sessao.js"></script>
 
-  <link rel="stylesheet" href="css/cadastro.login.css" />
+  <link rel="stylesheet" href="css/cadastro.css" />
+  <link rel="icon" type="image/x-icon" href="assets/imgs/logo_png.png">
   <link rel="icon" href="./assets/icon/favicon2.ico" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<body onload="listar()">
+<body onload="listarCpf()">
+  
 
-  <div class="login">
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
-      </div>
-    </div>
-
-
-
-    
-    <div class="container">
+    <div id="containerCentral">
       <div class="card card-cadastro">
+
+        <a href="index.html" class="links">
+          <img id="logo" src="assets/imgs/logo_png.png">
+        </a>
+
         <h2>Bem-vindo!</h2>
         <div class="formulario">
           <div class="campo">
             <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
           </div>
+
+          <div class="campo">
+            <span>CPF:</span>
+            <input id="cpf_input" type="text" placeholder="000.000.000-00" />
+          </div>
+
           <div class="campo">
             <span>E-mail:</span>
             <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
           </div>
+
           <div class="campo">
             <span>Senha:</span>
             <input id="senha_input" type="password" placeholder="******" />
           </div>
+
           <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
           </div>
+
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
-        <div id="div_aguardar" class="loading-div">
-          <img src="./assets/circle-loading.gif" id="loading-gif" />
-        </div>
-
+        <div class="login">
+    <div class="alerta_erro">
+      <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
+    </div>
         <div id="div_erros_login"></div>
       </div>
     </div>
@@ -63,15 +71,18 @@
 
 <script>
 
+    let listaCpfCadastrados = []
   function cadastrar() {
-  
+
     var nomeVar = nome_input.value;
+    var cpfVar = cpf_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
     if (
       nomeVar == "" ||
+      cpfVar =="" ||
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == ""
@@ -79,11 +90,84 @@
 
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+        "(Todos campos devem ser preenchidos)";
 
-      finalizarAguardar();
       return false;
-    } else {
+    }
+    else {
+      setInterval(sumirMensagem, 5000);
+    }
+
+    for (let i = 0; i < listaCpfCadastrados.length; i++) {
+      if (listaCpfCadastrados[i].cpf == cpfVar) {
+        cardErro.style.display = "block";
+        mensagem_erro.innerHTML = "(Cpf já esta em uso)";
+        return false;
+      }
+    }
+
+    if (nomeVar.length<= 3 
+    ) {
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(O nome deve conter mais de 3 letras)";
+
+      return false;
+    }
+    else {
+      setInterval(sumirMensagem, 5000);
+    }
+
+    if (cpfVar.length!=11 
+    ) {
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(O cpf deve conter exatamente 11 numeros)";
+
+      return false;
+    }
+    else {
+      setInterval(sumirMensagem, 5000);
+    }
+    
+    if (! (emailVar.includes('@') && emailVar.endsWith('.com'))
+    ) {
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(O email deve conter @ e terminar com .com)";
+
+      return false;
+    }
+    else {
+      setInterval(sumirMensagem, 5000);
+    }
+
+    if ( (senhaVar.length <= 7 && confirmacaoSenhaVar.length <= 7 )
+    ) {
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(As senhas devem ter mais de 8 caracteres)";
+
+      return false;
+    }
+    else {
+      setInterval(sumirMensagem, 5000);
+    }
+
+    if (senhaVar != confirmacaoSenhaVar
+    ) {
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(As senhas não conhecidem)";
+
+      return false;
+    }
+    else {
       setInterval(sumirMensagem, 5000);
     }
 
@@ -94,9 +178,9 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
+      
         nomeServer: nomeVar,
+        cpfServer: cpfVar,
         emailServer: emailVar,
         senhaServer: senhaVar
       }),
@@ -115,18 +199,37 @@
           }, "2000");
 
           limparFormulario();
-          finalizarAguardar();
         } else {
           throw "Houve um erro ao tentar realizar o cadastro!";
         }
       })
       .catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
       });
 
     return false;
   }
+
+
+  function listarCpf() {
+
+
+    fetch("/cpf/listar", {
+      method: "GET",
+    })
+      .then(function (resposta) {
+        resposta.json().then((cpfs) => {
+          cpfs.forEach((cpf) => {
+            listaCpfCadastrados.push(cpf);
+
+            console.log("listaCpfCadastrados")
+          });
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+    }
 
   function sumirMensagem() {
     cardErro.style.display = "none";

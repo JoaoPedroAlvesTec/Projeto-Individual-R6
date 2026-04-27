@@ -36,6 +36,7 @@ header{
     margin-left: 30px;
 }
 #header_links{
+    margin-left: 50px;
     display: flex;
     gap: 30px;
     color: white;
@@ -44,7 +45,26 @@ header{
     gap: 20px;
     display: flex;
 }
-
+#div_descobrir{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+#div_descobrir button{
+    width: 270px;
+    font-weight: 550;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    background-color: #ff9d00;
+    box-shadow: 0 0 10px 3px rgb(255 157 0 / 70%);
+    border-radius: 7px;
+    border-color: #000000;
+    border-width: 1px;
+    border-style: solid;
+    height: 40px;
+}
 .butoes{
     width: 120px;
     height: 30px;
