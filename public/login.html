@@ -79,11 +79,19 @@
                         resposta.json().then(json => {
                             sessionStorage.EMAIL_USUARIO = json.email;
                             sessionStorage.NOME_USUARIO = json.nome;
-                            sessionStorage.ID_USUARIO = json.id;
+                            sessionStorage.ID_USUARIO = json.id_usuario;
+
+                            cardErro.style.display = "block";
+
+                            cardErro.style.backgroundColor = "#001a00";
+                            cardErro.style.borderColor = "#00ff00";
+                            mensagem_erro.style.color = "#00ff00";
+
+                            mensagem_erro.innerHTML = "Login realizado com sucesso! Redirecionando...";
 
                             setTimeout(function () {
-                                window.location = "./dashboard/cards.html";
-                            }, 1000);
+                                window.location = "./dashboard/quiz.html";
+                            }, 3000);
                         });
                     } else {
                         resposta.text().then(texto => {

@@ -17,50 +17,50 @@
 </head>
 
 <body onload="listarCpf()">
-  
 
-    <div id="containerCentral">
-      <div class="card card-cadastro">
 
-        <a href="index.html" class="links">
-          <img id="logo" src="assets/imgs/logo_png.png">
-        </a>
+  <div id="containerCentral">
+    <div class="card card-cadastro">
 
-        <h2>Bem-vindo!</h2>
-        <div class="formulario">
-          <div class="campo">
-            <span>Nome:</span>
-            <input id="nome_input" type="text" placeholder="Seu nome" />
-          </div>
+      <a href="index.html" class="links">
+        <img id="logo" src="assets/imgs/logo_png.png">
+      </a>
 
-          <div class="campo">
-            <span>CPF:</span>
-            <input id="cpf_input" type="text" placeholder="000.000.000-00" />
-          </div>
-
-          <div class="campo">
-            <span>E-mail:</span>
-            <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
-          </div>
-
-          <div class="campo">
-            <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
-          </div>
-
-          <div class="campo">
-            <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
-          </div>
-
-          <button class="botao" onclick="cadastrar()">Cadastrar</button>
+      <h2>Bem-vindo!</h2>
+      <div class="formulario">
+        <div class="campo">
+          <span>Nome:</span>
+          <input id="nome_input" type="text" placeholder="Seu nome" />
         </div>
-        <div class="login">
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
+
+        <div class="campo">
+          <span>CPF:</span>
+          <input id="cpf_input" type="text" placeholder="000.000.000-00" />
+        </div>
+
+        <div class="campo">
+          <span>E-mail:</span>
+          <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
+        </div>
+
+        <div class="campo">
+          <span>Senha:</span>
+          <input id="senha_input" type="password" placeholder="******" />
+        </div>
+
+        <div class="campo">
+          <span>Confirmação da Senha:</span>
+          <input id="confirmacao_senha_input" type="password" placeholder="******" />
+        </div>
+
+        <button class="botao" onclick="cadastrar()">Cadastrar</button>
       </div>
-    </div>
+      <div class="login">
+        <div class="alerta_erro">
+          <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+          </div>
+        </div>
         <div id="div_erros_login"></div>
       </div>
     </div>
@@ -71,7 +71,7 @@
 
 <script>
 
-    let listaCpfCadastrados = []
+  let listaCpfCadastrados = []
   function cadastrar() {
 
     var nomeVar = nome_input.value;
@@ -82,7 +82,7 @@
 
     if (
       nomeVar == "" ||
-      cpfVar =="" ||
+      cpfVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == ""
@@ -106,7 +106,7 @@
       }
     }
 
-    if (nomeVar.length<= 3 
+    if (nomeVar.length <= 3
     ) {
 
       cardErro.style.display = "block";
@@ -119,7 +119,7 @@
       setInterval(sumirMensagem, 5000);
     }
 
-    if (cpfVar.length!=11 
+    if (cpfVar.length != 11
     ) {
 
       cardErro.style.display = "block";
@@ -131,8 +131,8 @@
     else {
       setInterval(sumirMensagem, 5000);
     }
-    
-    if (! (emailVar.includes('@') && emailVar.endsWith('.com'))
+
+    if (!(emailVar.includes('@') && emailVar.endsWith('.com'))
     ) {
 
       cardErro.style.display = "block";
@@ -145,7 +145,7 @@
       setInterval(sumirMensagem, 5000);
     }
 
-    if ( (senhaVar.length <= 7 && confirmacaoSenhaVar.length <= 7 )
+    if ((senhaVar.length <= 7 && confirmacaoSenhaVar.length <= 7)
     ) {
 
       cardErro.style.display = "block";
@@ -178,7 +178,7 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-      
+
         nomeServer: nomeVar,
         cpfServer: cpfVar,
         emailServer: emailVar,
@@ -189,14 +189,18 @@
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
+
           cardErro.style.display = "block";
 
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+          cardErro.style.backgroundColor = "#001a00"; 
+          cardErro.style.borderColor = "#00ff00";     
+          mensagem_erro.style.color = "#00ff00";
+
+          mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
 
           setTimeout(() => {
             window.location = "login.html";
-          }, "2000");
+          }, "3000");
 
           limparFormulario();
         } else {
@@ -229,7 +233,7 @@
       .catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
       });
-    }
+  }
 
   function sumirMensagem() {
     cardErro.style.display = "none";

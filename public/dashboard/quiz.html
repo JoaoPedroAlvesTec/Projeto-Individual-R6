@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>R6 Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/quiz.css">
+
+  <script src="../js/sessao.js"></script>
+  <script src="../js/alerta.js"></script>
+</head>
+
+<body onload="validarSessao(), verificarQuiz()">
+
+  <aside class="sidebar">
+
+    <div class="profile">
+      <img src="../assets/imgs/logo_png.png" alt="">
+      <hr><br>
+      <h3 id="h3_usuario" style="color:#00e0c6;">PlayerOne</h3>
+    </div>
+
+    <nav class="menu">
+      <div class="navegacao">
+        <img src="../assets/icon/quiz.png" class="icons">
+        <a href="quiz.html">QUIZ</a>
+      </div>
+
+      <div class="navegacao">
+        <img src="../assets/icon/ranking.png" class="icons">
+        <a href="dashboard.html">RANKING</a>
+      </div>
+
+      <div class="navegacao active">
+        <img src="../assets/icon/news.png" class="icons">
+        <a href="#">NOTÍCIAS</a>
+      </div>
+
+    </nav>
+
+    <div class="logout">
+      <button id="btn_sair" onclick="limparSessao()">Sair</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div id="bloqueado" style="display:none; text-align:center;">
+      <h2 id="h2_fim" style="color:#ff9d00 ;">Essas foram suas escolhas! Olhe o nosso ranking e compare suas respostas</h2>
+    </div>
+
+   <!-- 🔥 TELA INICIAL --> 
+    <div id="inicioQuiz" class="inicio" style="display: none;"> 
+      <h1 style="color: #ff9d00;">R6 QUIZ</h1> 
+      <p>Descubra seu estilo de jogo no Rainbow Six</p> 
+    <button onclick="iniciarQuiz()">COMEÇAR QUIZ</button> 
+  </div>
+    <div id="quizContainer" style="display:none;">
+
+      <div class="top">
+        <small id="progresso"></small>
+        <div class="progress">
+          <span id="barra"></span>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2 id="pergunta"></h2>
+      </div>
+
+      <div class="cards"></div>
+
+    </div>
+
+  </main>
+
+</body>
+
+</html>
+
+<script>
+  h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  let perguntaAtual = 1;
+  const totalPerguntas = 10;
+  let idTentativa;
+
+  function carregarPergunta() {
+
+    fetch(`/quiz/pergunta/${perguntaAtual}`)
+      .then(res => res.json())
+      .then(data => {
+
+      
+        document.getElementById("pergunta").innerText = data.pergunta;
+
+    
+        document.getElementById("progresso").innerText =
+          `Questão ${perguntaAtual} de ${totalPerguntas}`;
+
+        
+        let porcentagem = (perguntaAtual / totalPerguntas) * 100;
+        document.getElementById("barra").style.width = porcentagem + "%";
+
+        document.getElementById("quizContainer").display = "block";
+        const container = document.querySelector(".cards");
+        container.innerHTML = "";
+
+        data.alternativas.forEach(op => {
+          container.innerHTML += `
+          <div class="card" onclick="selecionar(${op.id})">
+            <img src="${op.img}">
+            <h3>${op.texto}</h3>
+            <p>${op.descricao}</p>
+          </div>
+        `;
+        });
+
+      })
+      .catch(err => {
+        console.error("Erro ao carregar pergunta:", err);
+      });
+  }
+
+  function selecionar(idAlternativa) {
+
+    console.log("Escolheu alternativa:", idAlternativa);
+
+    fetch("/quiz/resposta", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id_tentativa: idTentativa,
+        id_alternativa: idAlternativa
+      })
+    })
+      .then(function (resposta) {
+
+        if (resposta.ok) {
+
+          resposta.json().then(() => {
+
+            perguntaAtual++;
+
+            if (perguntaAtual <= totalPerguntas) {
+              carregarPergunta();
+            } else {
+              finalizarQuiz();
+            }
+
+          });
+
+        } else {
+          resposta.text().then(texto => {
+            console.error(texto);
+          });
+        }
+
+      })
+      .catch(function (erro) {
+        console.log(erro);
+      });
+
+  }
+
+ function finalizarQuiz() {
+
+  
+  document.querySelector(".question").style.display = "none";
+  document.querySelector(".top").style.display = "none";
+
+  const container = document.querySelector(".cards");
+  container.innerHTML = "";
+
+  document.getElementById("bloqueado").style.display = "block";
+
+  carregarMinhasEscolhas();
+}
+
+
+  function verificarQuiz() {
+
+    let idUsuario = sessionStorage.ID_USUARIO;
+
+    fetch(`/quiz/verificar/${idUsuario}`)
+      .then(res => res.json())
+      .then(data => {
+
+        if (data.jaFez) {
+          document.getElementById("bloqueado").style.display = "block";
+          carregarMinhasEscolhas();
+
+        } else {
+            document.getElementById("inicioQuiz").style.display = "block";
+        }
+
+      });
+  }
+
+  function iniciarQuiz() {
+
+    let idUsuario = sessionStorage.ID_USUARIO;
+
+    fetch("/quiz/tentativa", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id_usuario: idUsuario
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+
+      
+        idTentativa = data.id_tentativa;
+
+        document.getElementById("inicioQuiz").style.display = "none";
+        document.getElementById("quizContainer").style.display = "block";
+
+        perguntaAtual = 1;
+
+        carregarPergunta();
+
+      })
+      .catch(err => {
+        console.error("Erro ao iniciar quiz:", err);
+      });
+  }
+
+  function carregarMinhasEscolhas(){
+
+    let idUsuario = sessionStorage.ID_USUARIO;
+
+    document.getElementById("quizContainer").style.display = "block";
+
+    fetch(`/quiz/minhasEscolhas/${idUsuario}`)
+      .then(res => res.json())
+      .then(data => {
+        
+        const container = document.querySelector(".cards");
+        container.innerHTML = "";
+
+        data.alternativas.forEach(op => {
+          container.innerHTML += `
+          <div class="card_respostas">
+            <h3>${op.texto}</h3>
+            <p>${op.descricao}</p>
+          </div>
+        `;
+        });
+
+      })
+      .catch(err => {
+        console.error("Erro ao carregar pergunta:", err);
+      });
+  }
+</script>
