@@ -18,7 +18,7 @@ body{
 
 /* SIDEBAR */
 .sidebar{
-  width:240px;
+  width:180px;
   background:#0e131a;
   padding:20px;
   display:flex;
@@ -237,4 +237,61 @@ body{
 
 .inicio button:hover {
   background: #00c2aa;
+}
+.resultado {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.resultado_card {
+    
+    min-height: 320px;
+
+    background-color: #121821;
+
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    gap: 12px;
+
+    box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.6);
+
+    transition: 0.3s;
+}
+
+.resultado_card:hover {
+    transform: translateY(-5px);
+}
+
+.resultado_card img {
+    width: 120px;
+    height: 120px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+}
+
+.resultado_card h1 {
+    font-size: 24px;
+    color: white;
+
+    margin: 0;
+}
+
+.resultado_card p {
+    font-size: 14px;
+    color: #cfcfcf;
+
+    line-height: 1.5;
 }

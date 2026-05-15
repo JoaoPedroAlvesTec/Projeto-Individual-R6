@@ -19,7 +19,8 @@ function buscarPergunta(req, res) {
                             id: item.id_alternativa,
                             texto: item.texto,
                             descricao: item.descricao,
-                            img: item.img
+                            img: item.img,
+                            peso: item.peso
                         }))
                     });
 
@@ -49,12 +50,20 @@ function buscarMinhasEscolhas(req, res) {
                 if (resultado.length > 0) {
 
                     res.json({
+
                         alternativas: resultado.map(item => ({
                             id: item.id_alternativa,
                             texto: item.texto,
                             descricao: item.descricao,
                             img: item.img
-                        }))
+                        })),
+
+                        resultado: {
+                            nome: resultado[0].resultado_nome,
+                            descricao: resultado[0].resultado_descricao,
+                            img: resultado[0].resultado_img
+                        }
+
                     });
 
                 } else {
@@ -137,12 +146,47 @@ function criarTentativa(req, res) {
             });
     }
 }
+function definirResultado(req, res){
 
+    var id_resultado = req.body.id_resultado;
+    var id_tentativa = req.body.id_tentativa;
+
+    if (id_resultado == undefined) {
+
+        res.status(400).send("id_resultado está undefined!");
+
+    } else if (id_tentativa == undefined) {
+
+        res.status(400).send("id_tentativa está undefined!");
+
+    } else {
+
+        quizModel.definirResultado(id_resultado, id_tentativa)
+
+            .then(function (resultado) {
+
+                res.status(200).json({
+                    mensagem: "Resultado salvo com sucesso"
+                });
+
+            })
+
+            .catch(function (erro) {
+
+                console.log(erro);
+                console.log("\nErro ao definir resultado:", erro.sqlMessage);
+
+                res.status(500).json(erro.sqlMessage);
+
+            });
+    }
+}
 
 module.exports = {
     buscarPergunta,
     salvarResposta,
     buscarMinhasEscolhas,
     criarTentativa,
-    verificarTentativa
+    verificarTentativa,
+    definirResultado
 };

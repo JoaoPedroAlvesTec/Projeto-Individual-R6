@@ -130,16 +130,16 @@
     return false;
   }
 
-  function editar(idAviso) {
-    sessionStorage.ID_POSTAGEM_EDITANDO = idAviso;
-    console.log("cliquei em editar - " + idAviso);
+  function editar(idchat) {
+    sessionStorage.ID_POSTAGEM_EDITANDO = idchat;
+    console.log("cliquei em editar - " + idchat);
     window.location = "/dashboard/edicao-chat.html"
 
   }
 
-  function deletar(idAviso) {
-    console.log("Criar função de apagar post escolhido - ID" + idAviso);
-    fetch(`/chat/deletar/${idAviso}`, {
+  function deletar(idchat) {
+    console.log("Criar função de apagar post escolhido - ID" + idchat);
+    fetch(`/chat/deletar/${idchat}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -193,7 +193,7 @@
 
             if (id_usuario != resposta[i].idUsuario) {
 
-              spanID.innerHTML = "ID: <b>" + publicacao.idAviso + "</b>";
+              spanID.innerHTML = "ID: <b>" + publicacao.idchat + "</b>";
               spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
               spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
               divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
@@ -201,7 +201,7 @@
               // btnDeletar.innerHTML = "Deletar";
 
               divPublicacao.className = "publicacao";
-              spanTitulo.id = "inputNumero" + publicacao.idAviso;
+              spanTitulo.id = "inputNumero" + publicacao.idchat;
               spanNome.className = "publicacao-nome";
               spanTitulo.className = "publicacao-titulo";
               divDescricao.className = "publicacao-descricao";
@@ -209,12 +209,12 @@
               // divButtons.className = "div-buttons"
 
               // btnEditar.className = "publicacao-btn-editar"
-              // btnEditar.id = "btnEditar" + publicacao.idAviso;
-              // btnEditar.setAttribute("onclick", `editar(${publicacao.idAviso})`);
+              // btnEditar.id = "btnEditar" + publicacao.idchat;
+              // btnEditar.setAttribute("onclick", `editar(${publicacao.idchat})`);
 
               // btnDeletar.className = "publicacao-btn-editar"
-              // btnDeletar.id = "btnDeletar" + publicacao.idAviso;
-              // btnDeletar.setAttribute("onclick", `deletar(${publicacao.idAviso})`);
+              // btnDeletar.id = "btnDeletar" + publicacao.idchat;
+              // btnDeletar.setAttribute("onclick", `deletar(${publicacao.idchat})`);
 
               divPublicacao.appendChild(spanID);
               divPublicacao.appendChild(spanNome);
@@ -235,7 +235,7 @@
 
               console.log("to no else")
 
-              spanID.innerHTML = "ID: <b>" + publicacao.idAviso + "</b>";
+              spanID.innerHTML = "ID: <b>" + publicacao.idchat + "</b>";
               spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
               spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
               divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
@@ -243,7 +243,7 @@
               btnDeletar.innerHTML = "Deletar";
 
               divPublicacao.className = "publicacao";
-              spanTitulo.id = "inputNumero" + publicacao.idAviso;
+              spanTitulo.id = "inputNumero" + publicacao.idchat;
               spanNome.className = "publicacao-nome";
               spanTitulo.className = "publicacao-titulo";
               divDescricao.className = "publicacao-descricao";
@@ -251,12 +251,12 @@
               divButtons.className = "div-buttons"
 
               btnEditar.className = "publicacao-btn-editar"
-              btnEditar.id = "btnEditar" + publicacao.idAviso;
-              btnEditar.setAttribute("onclick", `editar(${publicacao.idAviso})`);
+              btnEditar.id = "btnEditar" + publicacao.idchat;
+              btnEditar.setAttribute("onclick", `editar(${publicacao.idchat})`);
 
               btnDeletar.className = "publicacao-btn-editar"
-              btnDeletar.id = "btnDeletar" + publicacao.idAviso;
-              btnDeletar.setAttribute("onclick", `deletar(${publicacao.idAviso})`);
+              btnDeletar.id = "btnDeletar" + publicacao.idchat;
+              btnDeletar.setAttribute("onclick", `deletar(${publicacao.idchat})`);
 
               divPublicacao.appendChild(spanID);
               divPublicacao.appendChild(spanNome);

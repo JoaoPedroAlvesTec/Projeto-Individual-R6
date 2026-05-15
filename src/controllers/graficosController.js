@@ -40,9 +40,9 @@ function tentativasTotal(req, res) {
         });
 }
 
-function maisEscolhida(req, res) {
+function maiorResultado(req, res) {
 
-    graficosModel.maisEscolhida()
+    graficosModel.maiorResultado()
         .then(resultado => res.json(resultado))
         .catch(erro => {
             console.log(erro);
@@ -50,9 +50,9 @@ function maisEscolhida(req, res) {
         });
 }
 
-function menosEscolhida(req, res) {
+function menorResultado(req, res) {
 
-    graficosModel.menosEscolhida()
+    graficosModel.menorResultado()
         .then(resultado => res.json(resultado))
         .catch(erro => {
             console.log(erro);
@@ -64,6 +64,6 @@ module.exports = {
     estatisticasPergunta,
     estatisticasGeral,
     tentativasTotal,
-    menosEscolhida,
-    maisEscolhida
+    menorResultado,
+    maiorResultado
 };

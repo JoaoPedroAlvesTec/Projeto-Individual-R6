@@ -20,7 +20,7 @@ body {
 }
 
 .sidebar {
-  width: 240px;
+  width: 180px;
   background: #0e131a;
   padding: 20px;
   display: flex;
@@ -127,28 +127,51 @@ body {
 .filtro {
   display: flex;
   gap: 15px;
-  margin-bottom: 30px;
+  margin: 15px;
 }
 
 .filtro select {
+  width: 50%;
   padding: 10px;
   border-radius: 8px;
-  border: none;
+   border-width: 1px;
+  border-style: solid;
   background: #121821;
-  color: #fff;
-  box-shadow: 0 0 10px 3px rgb(255 157 0 / 70%);
+  color: #aaa;
+  font-size: 16px;
+  text-align: center;
+  border-color: #ff9d00;
+  box-shadow: 0 0 10px rgb(255 157 0 / 70%);
+  font-weight: bold;
 }
 
 .btn {
+  font-weight: bold;
+  color: #aaa;
+  font-size: 16px;
+  text-align: center;
+  background-color: #121821;
+  border-radius: 8px;
+  border-color: #ff9d00; 
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 0 0 10px rgb(255 157 0 / 70%);
+  cursor: pointer;
+  width: 50%;
+}
+
+.btn_2{
   color: white;
   background-color: #121821;
   border-radius: 7px;
-  border-color: #191919;
   border-width: 1px;
   border-style: solid;
-  box-shadow: 0 0 10px 3px rgb(255 157 0 / 70%);
+  border: 1px solid rgba(0, 255, 255, .5);
+  box-shadow:
+        0 0 10px rgba(0, 255, 255, .3);
   cursor: pointer;
-  width: 100px;
+  width: 100%;
+  height: 40px;
 }
 
 .btn:hover {
@@ -158,43 +181,51 @@ body {
 
 .graficos {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 25px;
   width: 100%;
+  justify-content: center; /* Centraliza se a tela for muito grande */
 }
-
 
 .grafico {
   background: #121821;
   border-radius: 16px;
   padding: 25px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  /* Gerenciamento inteligente de tamanho */
+  flex: 1;
+  min-width: 350px;
+  max-width: 550px; /* Impede que os gráficos estiquem infinitamente para os lados */
+  height: 480px;    /* Define uma altura fixa idêntica para ambos ficarem alinhados */
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.topo {
   box-shadow: 0 0 10px 3px rgb(255 157 0 / 70%);
 }
 
-
-.topo {
-  width: 100%;
-
-}
-
-
 .baixo {
-  width: 100%;
   box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.6);
 }
 
 .grafico h3 {
+  margin-top: 10px;
   margin-bottom: 20px;
   font-size: 18px;
-  color: #aaa;
+  color: #fff;
   text-align: center;
 }
 
-
+/* Container interno para o canvas respirar sem bugar */
 .grafico canvas {
   width: 100% !important;
-  height: 350px !important;
+  height: 100% !important;
+  max-height: 320px; /* Limita a altura do elemento gráfico interno */
 }
 
 
@@ -234,7 +265,8 @@ body {
 }
 
 .kpi p {
+  color: #aaa;
   font-size: 16px;
-  color: #fff;
   text-align: center;
 }
+

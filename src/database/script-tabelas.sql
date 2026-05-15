@@ -1,135 +1,3 @@
-CREATE DATABASE R6;
-USE R6;
-
-CREATE TABLE usuario (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(45) NOT NULL,
-    cpf CHAR(11) UNIQUE NOT NULL,
-    email VARCHAR(95) UNIQUE NOT NULL,
-    senha VARCHAR(45) NOT NULL
-);
-
-CREATE TABLE tentativa (
-    id_tentativa INT AUTO_INCREMENT PRIMARY KEY,
-    data_tentativa DATE NOT NULL,
-    fk_id_usuario INT UNIQUE NOT NULL,
-    CONSTRAINT fk_usuario_tentativa 
-        FOREIGN KEY (fk_id_usuario) 
-        REFERENCES usuario(id_usuario)
-);
-
-CREATE TABLE pergunta (
-    id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
-    texto VARCHAR(45) NOT NULL
-);
-
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
-);
-
-CREATE TABLE alternativa (
-    id_alternativa INT AUTO_INCREMENT PRIMARY KEY,
-    texto VARCHAR(45) NOT NULL,
-    descricao VARCHAR(70),
-    img VARCHAR(200),
-    fk_id_pergunta INT NOT NULL,
-    CONSTRAINT fk_pergunta_alternativa 
-        FOREIGN KEY (fk_id_pergunta) 
-        REFERENCES pergunta(id_pergunta)
-);
-
-
-CREATE TABLE resposta (
-    id_respostas INT AUTO_INCREMENT PRIMARY KEY,
-    fk_id_tentativa INT NOT NULL,
-    fk_id_alternativa INT NOT NULL,
-    CONSTRAINT fk_tentativa_resposta 
-        FOREIGN KEY (fk_id_tentativa) 
-        REFERENCES tentativa(id_tentativa),
-    CONSTRAINT fk_alternativa_resposta 
-        FOREIGN KEY (fk_id_alternativa) 
-        REFERENCES alternativa(id_alternativa)
-);
-
-INSERT INTO pergunta (texto) VALUES
-('Qual personagem você jogaria no ataque?'),
-('Qual personagem você jogaria na defesa?'),
-('Qual mapa você prefere jogar?'),
-('Em uma rodada difícil, qual seria sua prioridade?'),
-('Como você costuma se posicionar durante a partida?'),
-('Qual sua principal qualidade no jogo?'),
-('Você prefere iniciar execuções ou dar suporte ao time?'),
-('Como você reage quando o plano inicial falha?'),
-('Qual habilidade você usaria?'),
-('Qual gadget você usaria na defesa?');
-
-INSERT INTO alternativa (texto, descricao, img, fk_id_pergunta) VALUES
-
-('Sledge', 'Força e abertura', '../assets/imgs/sledge.avif', 1),
-('Ash', 'Rápida e agressiva', '../assets/imgs/ash.avif', 1),
-('Zofia', 'Equilibrada', '../assets/imgs/zofia.avif', 1),
-('Hibana', 'Abertura estratégica', '../assets/imgs/hibana.avif', 1),
-('Dokkaebi', 'Rastreamento', '../assets/imgs/dokkaebi.avif', 1),
-
-('Jäger', 'Anti granadas', '../assets/imgs/jager.avif', 2),
-('Smoke', 'Controle de área', '../assets/imgs/smoke.avif', 2),
-('Bandit', 'Eletricidade', '../assets/imgs/bandit.avif', 2),
-('Mute', 'Bloqueio eletrônico', '../assets/imgs/mute.avif', 2),
-('Kapkan', 'Armadilhas', '../assets/imgs/kapkan.avif', 2),
-
-('Oregon', 'Clássico e equilibrado', '../assets/imgs/oregon.jpg', 3),
-('Clubhouse', 'Competitivo', '../assets/imgs/clubhouse.jpg', 3),
-('Consulate', 'Verticalidade', '../assets/imgs/consulate.jpg', 3),
-('Bank', 'Grande e tático', '../assets/imgs/bank.jpg', 3),
-('Kafe', 'Combate fechado', '../assets/imgs/kafe.jpg', 3),
-
-('R4-C', 'Alta cadência', '../assets/imgs/r4c.png', 4),
-('AK-12', 'Muito dano', '../assets/imgs/ak12.png', 4),
-('L85A2', 'Estável', '../assets/imgs/l85.png', 4),
-('Type-89', 'Compacta', '../assets/imgs/type89.png', 4),
-('F2', 'Precisão alta', '../assets/imgs/f2.png', 4),
-
-('MP5', 'Equilibrada', '../assets/imgs/mp5.png', 5),
-('UMP45', 'Controle fácil', '../assets/imgs/ump45.png', 5),
-('MP7', 'Rápida', '../assets/imgs/mp7.png', 5),
-('Vector', 'Alta cadência', '../assets/imgs/vector.png', 5),
-('T-5 SMG', 'Muito forte', '../assets/imgs/t5.png', 5),
-
-('Entry Fragger', 'Vai primeiro', '../assets/imgs/entry.jpg', 6),
-('Suporte', 'Ajuda o time', '../assets/imgs/support.jpg', 6),
-('Anchor', 'Defende o bomb', '../assets/imgs/anchor.jpg', 6),
-('Roamer', 'Flanqueia inimigos', '../assets/imgs/roamer.jpg', 6),
-('IGL', 'Líder estratégico', '../assets/imgs/igl.jpg', 6),
-
-('Granada', 'Explosiva', 'https://static.wikia.nocookie.net/rainbowsix/images/a/a6/R6S_Frag_Grenade.png/revision/latest?cb=20220525145213', 7),
-('Flashbang', 'Cega inimigos', 'https://static.wikia.nocookie.net/rainbowsix/images/f/f6/M84stungrenade.png/revision/latest?cb=20260227145400', 7),
-('Smoke', 'Cobertura', 'https://static.wikia.nocookie.net/rainbowsix/images/d/d5/Smoke_Grenade.png/revision/latest/scale-to-width-down/1200?cb=20260227164233', 7),
-('Claymore', 'Proteção traseira', 'https://static.wikia.nocookie.net/rainbowsix/images/0/02/R6S_Claymore.png/revision/latest?cb=20220525145152', 7),
-('Drone', 'Informação', 'https://ubiservices.cdn.ubi.com/0d2ae42d-4c27-4cb7-af6c-2099062302bb/MtxAssetsDeployer/5b294898_4c26_5e0b_ec96_90a5fe4a1926.png?imwidth=640', 7),
-
-('Arame farpado', 'Lentidão', 'https://static.wikia.nocookie.net/rainbowsix/images/8/80/R6S_Barbed_Wire.png/revision/latest?cb=20220525145131', 8),
-('C4', 'Explosivo', 'https://static.wikia.nocookie.net/rainbowsix/images/e/e1/R6S_Nitro_Cell.png/revision/latest?cb=20220525145259', 8),
-('Escudo', 'Cobertura', 'https://static.wikia.nocookie.net/rainbowsix/images/b/b7/R6S_Deployable_Shield_v2.png/revision/latest?cb=20220525145158', 8),
-('Câmera', 'Visão extra', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5zHHGjPWnHSkc7hkX9vuXB8Y011Q56HM4AA&s', 8),
-('Impact', 'Rotação rápida', 'https://static.wikia.nocookie.net/rainbowsix/images/f/f5/R6S_Impact_Grenade.png/revision/latest?cb=20220525145223', 8),
-
-('R.O.U. Projector System (Sens)', 'Projeta uma parede de luz que bloqueia visão', 'https://cdna.artstation.com/p/assets/covers/images/050/716/256/large/maksym-bidnychenko-maksym-bidnychenko-23123.jpg?1655497398', 9),
-('Cluster Charge (Fuze)', 'Dispara múltiplas granadas através de superfícies', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_0eFp_3vecEgd-cVcaKtTWjtRyuFB23_xAA&s', 9),
-('Eyenox Model III (Jackal)', 'Rastreia pegadas inimigas para localizar alvos', 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3ntMaBashgSGTlNnf8xT0v/b5f7e601d851c4308cd208deb07b1073/R6-operators-gadget-jackal.png', 9),
-('Candela (Ying)', 'Libera múltiplos flashes para cegar inimigos', 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/12qs6GsjM988o3c7TmNcfa/36a79793938a6568f78562b5e518761d/R6-operators-gadget-ying.png', 9),
-('Airjab Launcher (Nomad)', 'Arremessa inimigos e impede avanços agressivos', 'https://static.wikia.nocookie.net/rainbowsix/images/4/4d/Gadget_REACT_Airjab_Launcher.png/revision/latest?cb=20220124140557', 9),
-
-('ADS (Jäger)', 'Neutraliza granadas antes de explodirem', 'https://static9.cdn.ubi.com/resource/en-US/game/rainbow6/siege/R6-operators-gadget-jager_229893.png', 10),
-('Signal Disruptor (Mute)', 'Bloqueia drones e dispositivos inimigos', 'https://static9.cdn.ubi.com/resource/en-US/game/rainbow6/siege/R6-operators-gadget-mute_229896.png', 10),
-('Shock Wire (Bandit)', 'Eletrifica paredes e destrói gadgets', 'https://banditodorito.home.blog/wp-content/uploads/2018/10/shock-wire1.png', 10),
-('Welcome Mat (Frost)', 'Armadilha que derruba inimigos distraídos', 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3xlKismScJsEbZgXdMgu5v/261f291604550bc4039b7dde00ba551e/R6-operators-gadget-frost.webp', 10),
-('Evil Eye (Maestro)', 'Câmeras blindadas que dão choque', 'https://i.etsystatic.com/56177334/r/il/5f1659/7798852531/il_570xN.7798852531_z9zw.jpg', 10);
-
-
 CREATE database R6;
 USE R6;
 
@@ -141,30 +9,37 @@ CREATE TABLE usuario (
     senha VARCHAR(45) NOT NULL
 );
 
+CREATE TABLE resultado (
+    id_resultado INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    descricao TEXT NOT NULL,
+    img VARCHAR(255) NOT NULL
+);
+CREATE TABLE pergunta (
+    id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
+    texto VARCHAR(45) NOT NULL
+);
+
+CREATE TABLE chat (
+	id_chat INT PRIMARY KEY AUTO_INCREMENT,
+    categoria VARCHAR(150),
+	titulo VARCHAR(100),
+	descricao VARCHAR(150),
+	fk_usuario INT,
+	FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
+);
+
 CREATE TABLE tentativa (
     id_tentativa INT AUTO_INCREMENT PRIMARY KEY,
     data_tentativa DATE NOT NULL,
     fk_id_usuario INT UNIQUE NOT NULL,
-    fk_id_resultado INT UNIQUE,
+    fk_id_resultado INT,
     CONSTRAINT fk_usuario_tentativa 
         FOREIGN KEY (fk_id_usuario) 
         REFERENCES usuario(id_usuario),
 	CONSTRAINT fk_tentativa_resultado
 		FOREIGN KEY (fk_id_resultado)
         REFERENCES resultado(id_resultado)
-);
-
-CREATE TABLE pergunta (
-    id_pergunta INT AUTO_INCREMENT PRIMARY KEY,
-    texto VARCHAR(45) NOT NULL
-);
-
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 );
 
 CREATE TABLE alternativa (
@@ -179,7 +54,6 @@ CREATE TABLE alternativa (
         REFERENCES pergunta(id_pergunta)
 );
 
-
 CREATE TABLE resposta (
     id_respostas INT AUTO_INCREMENT PRIMARY KEY,
     fk_id_tentativa INT NOT NULL,
@@ -187,58 +61,26 @@ CREATE TABLE resposta (
     CONSTRAINT fk_tentativa_resposta 
         FOREIGN KEY (fk_id_tentativa) 
         REFERENCES tentativa(id_tentativa),
+        
     CONSTRAINT fk_alternativa_resposta 
         FOREIGN KEY (fk_id_alternativa) 
         REFERENCES alternativa(id_alternativa)
 );
 
-CREATE TABLE chat (
-	id_chat INT PRIMARY KEY AUTO_INCREMENT,
-    categoria VARCHAR(150),
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
-);
 
-CREATE TABLE resultado (
-    id_resultado INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50) NOT NULL,
-    descricao TEXT NOT NULL,
-    img VARCHAR(255) NOT NULL
-);
+
+
 
 INSERT INTO resultado (nome, descricao, img) VALUES
+('SUP 1','Você é o suporte principal do time. Seu foco está em ajudar execuções, abrir espaço com utilidade e garantir que o time consiga executar estratégias com segurança.','../assets/imgs/soulz.webp'),
 
-(
-    'SUP 1',
-    'Você é o suporte principal do time. Seu foco está em ajudar execuções, abrir espaço com utilidade e garantir que o time consiga executar estratégias com segurança.',
-    '../assets/imgs/resultados/sup1.jpg'
-),
+('SUP 2','Você joga focado em informação e cobertura. Seu estilo prioriza drones, câmeras, flank watch e suporte estratégico para manter o controle do mapa.','../assets/imgs/paluh.jpg'),
 
-(
-    'SUP 2',
-    'Você joga focado em informação e cobertura. Seu estilo prioriza drones, câmeras, flank watch e suporte estratégico para manter o controle do mapa.',
-    '../assets/imgs/resultados/sup2.jpg'
-),
+('IGL','Você tem perfil de líder. Costuma coordenar estratégias, adaptar táticas durante a partida e organizar o ritmo do time em situações difíceis.','../assets/imgs/lagonis.webp'),
 
-(
-    'IGL',
-    'Você tem perfil de líder. Costuma coordenar estratégias, adaptar táticas durante a partida e organizar o ritmo do time em situações difíceis.',
-    '../assets/imgs/resultados/igl.jpg'
-),
+('FLEX','Você é adaptável e consegue assumir diferentes funções dependendo da necessidade do time. Seu estilo é equilibrado e versátil.','../assets/imgs/alemao.jpg'),
 
-(
-    'FLEX',
-    'Você é adaptável e consegue assumir diferentes funções dependendo da necessidade do time. Seu estilo é equilibrado e versátil.',
-    '../assets/imgs/resultados/flex.jpg'
-),
-
-(
-    'ENTRY',
-    'Você gosta de agressividade e impacto imediato. Seu foco está em abrir espaço, buscar eliminações rápidas e pressionar o adversário.',
-    '../assets/imgs/resultados/entry.jpg'
-);
+('ENTRY','Você gosta de agressividade e impacto imediato. Seu foco está em abrir espaço, buscar eliminações rápidas e pressionar o adversário.','../assets/imgs/nesk.jpg');
 
 INSERT INTO pergunta (texto) VALUES
 ('Qual personagem você jogaria no ataque?'),
@@ -276,25 +118,26 @@ INSERT INTO alternativa (texto, descricao, peso, img, fk_id_pergunta) VALUES
 ('Clubhouse', 'Execução organizada e suporte forte', 1, 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1vCw5eD2XzxZlv6Au1gtui/06a84bacaacab62937dd6d4d8ae393c7/R6S_Maps_ClubHouse_EXT.jpg', 3),
 
 -- PERGUNTA 4
-('R4-C', 'Alta agressividade e entrada rápida', 5, 'https://liquipedia.net/commons/images/3/35/R6S_wpn_R4-C.png', 4),
-('MK14 EBR', 'Controle e leitura de jogo', 3, 'https://liquipedia.net/commons/images/2/26/R6S_wpn_Mk_14_EBR.png', 4),
-('C8-SFW', 'Versátil para várias situações', 4, 'https://liquipedia.net/commons/images/d/d3/R6S_wpn_C8-SFW.png', 4),
-('L85A2', 'Consistente e segura', 1, 'https://liquipedia.net/commons/images/7/78/R6S_wpn_L85A2.png', 4),
-('MP7 do Zero', 'Precisão e suporte informativo', 2, 'https://liquipedia.net/commons/images/8/80/R6S_wpn_MP7.png', 4),
+('R4-C', 'Alta agressividade e entrada rápida', 5, '../assets/imgs/r4c.png', 4),
+('AK-12', 'Estabilidade para coordenar o time', 2, '../assets/imgs/ak12.png', 4),
+('F-2', 'Trocação rápida e agressiva', 4, '../assets/imgs/f2.png', 4),
+('L85A2', 'Consistente e segura', 3, '../assets/imgs/l85.png', 4),
+('TYPE-89', 'Controle defensivo seguro', 1, '../assets/imgs/type89.png', 4),
+
 
 -- PERGUNTA 5
-('ALDA 5.56', 'Controle de informação e ângulos', 2, 'https://liquipedia.net/commons/images/7/7b/R6S_wpn_ALDA_5.56.png', 5),
-('Vector', 'Trocação rápida e agressiva', 5, 'https://liquipedia.net/commons/images/a/a1/R6S_wpn_Vector_.45_ACP.png', 5),
-('MP5', 'Estabilidade para coordenar o time', 3, 'https://liquipedia.net/commons/images/8/89/R6S_wpn_MP5.png', 5),
-('T-5 SMG', 'Equilibrada em qualquer situação', 4, 'https://liquipedia.net/commons/images/5/50/R6S_wpn_T-5_SMG.png', 5),
-('FMG-9', 'Controle defensivo seguro', 1, 'https://liquipedia.net/commons/images/2/26/R6S_wpn_FMG-9.png', 5),
+('MP5', 'Controle de informação e ângulos', 2, '../assets/imgs/mp5.png', 5),
+('MP7', 'Consistente em trocações', 4, '../assets/imgs/mp7.png', 5),
+('UMP-45', 'Controle e leitura de jogo', 1, '../assets/imgs/ump45.png', 5),
+('T-5 SMG', 'Equilibrada em qualquer situação', 3, '../assets/imgs/t5.png', 5),
+('VECTOR', 'Alta cadencia para trocações', 5, '../assets/imgs/vector.png', 5),
 
 -- PERGUNTA 6
-('Ganhar trocação e abrir espaço', 'Pressão ofensiva', 5, 'https://cdn-icons-png.flaticon.com/512/1022/1022348.png', 6),
-('Passar informação constantemente', 'Câmeras, drones e calls', 2, 'https://cdn-icons-png.flaticon.com/512/46/46075.png', 6),
-('Se adaptar ao que o time precisa', 'Flexibilidade total', 4, 'https://cdn-icons-png.flaticon.com/512/38/38043.png', 6),
-('Liderar estratégias e adaptações', 'Controla o ritmo da partida', 3, 'https://cdn-icons-png.flaticon.com/512/1278/1278206.png', 6),
-('Dar suporte utilitário ao time', 'Ajuda execuções e cobertura', 1, 'https://cdn-icons-png.flaticon.com/512/4233/4233839.png', 6),
+('Trocação', 'Pressão ofensiva', 5, 'https://cdn-icons-png.flaticon.com/512/1022/1022348.png', 6),
+('Informação', 'Câmeras, drones e calls', 2, 'https://cdn-icons-png.flaticon.com/512/46/46075.png', 6),
+('Adaptação', 'Flexibilidade total', 4, 'https://cdn-icons-png.flaticon.com/512/38/38043.png', 6),
+('Estratégias', 'Controla o ritmo da partida', 3, 'https://cdn-icons-png.flaticon.com/512/1278/1278206.png', 6),
+('Suporte', 'Ajuda execuções e cobertura', 1, 'https://cdn-icons-png.flaticon.com/512/4233/4233839.png', 6),
 
 -- PERGUNTA 7
 ('Flashbang', 'Versátil para qualquer entrada', 4, 'https://static.wikia.nocookie.net/rainbowsix/images/d/d9/R6S_Stun_Grenade.png/revision/latest?cb=20220525145604', 7),

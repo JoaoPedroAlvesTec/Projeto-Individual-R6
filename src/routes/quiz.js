@@ -23,4 +23,7 @@ router.post("/tentativa", function (req, res) {
     quizController.criarTentativa(req, res);
 });
 
+router.post("/resultado", function (req, res) {
+    quizController.definirResultado(req, res);
+});
 module.exports = router;

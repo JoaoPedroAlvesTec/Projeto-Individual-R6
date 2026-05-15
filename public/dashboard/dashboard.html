@@ -11,7 +11,8 @@
   <script src="../js/alerta.js"></script>
 </head>
 
-<body onload="validarSessao(), carregarGraficoPergunta(1), carregarGraficoGeral(), carregarKpiTentativas(), carregarMaisEscolhidas(), carregarMenosEscolhidas()">
+<body
+  onload="validarSessao(), carregarGraficoPergunta(1), carregarGraficoGeral(), carregarKpiTentativas(), carregarMaiorResultado(), carregarMenorResultado()">
 
   <aside class="sidebar">
     <div class="profile">
@@ -53,59 +54,58 @@
       <p>Veja as escolhas mais populares do quiz</p>
     </div>
 
-    <div class="filtro">
-      <select id="selectPergunta">
-        <option value="1">Pergunta 1</option>
-        <option value="2">Pergunta 2</option>
-        <option value="3">Pergunta 3</option>
-        <option value="4">Pergunta 4</option>
-        <option value="5">Pergunta 5</option>
-        <option value="6">Pergunta 6</option>
-        <option value="7">Pergunta 7</option>
-        <option value="8">Pergunta 8</option>
-        <option value="9">Pergunta 9</option>
-        <option value="10">Pergunta 10</option>
-      </select>
-
-      <button class="btn" onclick="filtrarPergunta()">Confirmar</button>
-    </div>
-
     <div class="graficos">
 
+      <div class="kpis">
 
-  <div class="kpis">
+        <div class="kpi">
+          <h2>Total de Questionários Respondidos</h2>
+          <span id="kpiTentativasTotal"></span>
+        </div>
 
-    <div class="kpi">
-      <h2>Pessoas que Responderam ao quiz</h2>
-      <span id="kpiTentativasTotal"></span>
-      <p id="kpiTotal">Respostas ao quiz</p>
+        <div class="kpi">
+          <h2>Perfil Predominante</h2>
+          <span style="color: green;" id="kpiMaisEscolhida"></span>
+          <p id="kpiMaisEscolhidaPergunta"></p>
+        </div>
+
+        <div class="kpi">
+          <h2>Perfil Menos Frequente</h2>
+          <span style="color: red;" id="kpiMenosEscolhida"> </span>
+          <p id="kpiMenosEscolhidaPergunta"></p>
+        </div>
+
+      </div>
+
+      <div class="grafico baixo">
+        <div class="filtro">
+        <button class="btn_2"></button>
+        </div>
+        <h3>Alternativas mais escolhidas</h3>
+        <canvas id="graficoGeral"></canvas>
+      </div>
+      
+      <div class="grafico topo">
+        <div class="filtro">
+        <select id="selectPergunta">
+          <option value="1">Pergunta 1</option>
+          <option value="2">Pergunta 2</option>
+          <option value="3">Pergunta 3</option>
+          <option value="4">Pergunta 4</option>
+          <option value="5">Pergunta 5</option>
+          <option value="6">Pergunta 6</option>
+          <option value="7">Pergunta 7</option>
+          <option value="8">Pergunta 8</option>
+          <option value="9">Pergunta 9</option>
+          <option value="10">Pergunta 10</option>
+        </select>
+
+        <button class="btn" onclick="filtrarPergunta()">Confirmar</button>
+      </div>
+        <h3>Distribuição de Respostas por Pergunta</h3>
+        <canvas id="graficoPergunta"></canvas>
+      </div>
     </div>
-
-    <div class="kpi">
-      <h2>Alternativa Mais Popular</h2>
-      <span id="kpiMaisEscolhida"></span>
-      <p id="kpiMaisEscolhidaPergunta"></p>
-    </div>
-
-    <div class="kpi">
-      <h2>Alternativa Menos Popular</h2>
-      <span id="kpiMenosEscolhida"> </span>
-      <p id="kpiMenosEscolhidaPergunta"></p>
-    </div>
-
-  </div>
-
-  <div class="grafico topo">
-    <h3>Alternativa mais escolhida da pergunta</h3>
-    <canvas id="graficoPergunta"></canvas>
-  </div>
-
-  <div class="grafico baixo">
-    <h3>Alternativas mais escolhidas</h3>
-    <canvas id="graficoGeral"></canvas>
-  </div>
-
-</div>
 
   </main>
 
@@ -155,17 +155,14 @@
     }
 
     graficoPergunta = new Chart(ctx, {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: labels,
         datasets: [{
           data: valores,
           backgroundColor: [
-            "#003366",
-            "#007BFF",
-            "#00FFFF",
-            "#87CEEB",
-            "#E0F7FA"
+            "#ff9d00",
+            "#00ffff"
           ],
           borderColor: "#0e131a",
           borderWidth: 2
@@ -176,11 +173,15 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: "bottom",
-            labels: {
-              color: "#fff",
-              padding: 15,
-              boxWidth: 15
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              precision: 0
             }
           }
         }
@@ -200,8 +201,8 @@
         let valores = [];
 
         data.forEach(item => {
-          labels.push(`P${item.id_pergunta} - ${item.alternativa}`);
-          valores.push(item.total);
+          labels.push(`${item.perfil} `);
+          valores.push(item.porcentagem);
         });
 
         renderizarGraficoGeral(labels, valores);
@@ -222,14 +223,14 @@
       .catch(err => console.error(err));
   }
 
-  function carregarMaisEscolhidas() {
+  function carregarMaiorResultado() {
 
-    fetch(`/graficos/maisEscolhida`)
+    fetch(`/graficos/maiorResultado`)
       .then(res => res.json())
       .then(data => {
 
-        kpiMaisEscolhida.innerHTML = data[0].alternativa;
-        kpiMaisEscolhidaPergunta.innerHTML = `Pergunta ${data[0].id_pergunta}`;
+        kpiMaisEscolhida.innerHTML = data[0].nome;
+        kpiMaisEscolhidaPergunta.innerHTML = `Numero de Resultados (${data[0].quantidade}) `;
 
       })
       .catch(err => console.error(err));
@@ -237,14 +238,14 @@
 
 
 
-  function carregarMenosEscolhidas() {
+  function carregarMenorResultado() {
 
-    fetch(`/graficos/menosEscolhida`)
+    fetch(`/graficos/menorResultado`)
       .then(res => res.json())
       .then(data => {
 
-        kpiMenosEscolhida.innerHTML = data[0].alternativa;
-        kpiMenosEscolhidaPergunta.innerHTML = `Pergunta ${data[0].id_pergunta}`;
+        kpiMenosEscolhida.innerHTML = data[0].nome;
+        kpiMenosEscolhidaPergunta.innerHTML = `Numero de Resultados (${data[0].quantidade})`;
 
       })
       .catch(err => console.error(err));
@@ -262,7 +263,7 @@
       "#00ffff"
     ];
     graficoGeral = new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels: labels,
         datasets: [{
@@ -276,19 +277,11 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
+            display: true,
+            position: 'bottom',
             labels: { color: "#fff" }
           }
         },
-        scales: {
-          x: {
-            ticks: { color: "#aaa" }
-          },
-          y: {
-            ticks: { color: "#aaa" },
-            beginAtZero: true,
-            stepSize: 1
-          }
-        }
       }
     });
   }

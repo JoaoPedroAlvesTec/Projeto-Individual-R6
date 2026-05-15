@@ -13,11 +13,11 @@ router.get("/estatisticas-geral", function (req, res) {
 router.get("/tentativasTotal", function (req, res) {
     graficosController.tentativasTotal(req, res);
 });
-router.get("/maisEscolhida", function (req, res) {
-    graficosController.maisEscolhida(req, res);
+router.get("/maiorResultado", function (req, res) {
+    graficosController.maiorResultado(req, res);
 });
-router.get("/menosEscolhida", function (req, res) {
-    graficosController.menosEscolhida(req, res);
+router.get("/menorResultado", function (req, res) {
+    graficosController.menorResultado(req, res);
 });
 
 module.exports = router;
