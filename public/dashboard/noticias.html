@@ -10,14 +10,14 @@
   <script src="../js/sessao.js"></script>
 </head>
 
-<body>
+<body onload="validarSessao()">
 
   <aside class="sidebar">
 
     <div class="profile">
       <img src="../assets/imgs/logo_png.png" alt="">
       <hr><br>
-      <h3 id="h3_usuario" style="color:#00e0c6;">Joao</h3>
+      <h3 id="h3_usuario" style="color:#00e0c6;"></h3>
     </div>
 
     <nav class="menu">
@@ -33,7 +33,11 @@
 
       <div class="navegacao active">
         <img src="../assets/icon/news.png" class="icons">
-        <a href="#">NOTÍCIAS</a>
+        <a href="noticias.html">NOTÍCIAS</a>
+      </div>
+      <div class="navegacao active">
+        <img src="../assets/icon/chat.png" class="icons">
+        <a href="chat.html">BATE PAPO</a>
       </div>
 
     </nav>
@@ -57,7 +61,7 @@
       <!-- CARD 1 -->
       <div class="card-noticia">
 
-        <img src="../assets/imgs/noticia1.jpg" alt="">
+        <img src="https://a.espncdn.com/photo/2024/0227/r1297111_1296x729_16-9.jpg" alt="">
 
         <div class="conteudo">
 
@@ -72,10 +76,6 @@
             o cenário competitivo do Rainbow Six.
           </p>
 
-          <button class="botao">
-            Ler Mais
-          </button>
-
         </div>
 
       </div>
@@ -83,7 +83,7 @@
       <!-- CARD 2 -->
       <div class="card-noticia">
 
-        <img src="../assets/imgs/noticia2.jpg" alt="">
+        <img src="https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/114GbZZasdcjFTd8BfT9FI/daac4cbd685a588248a02b5538cd2fb6/r6s-y11s1-keyart-meta__1_.jpg" alt="">
 
         <div class="conteudo">
 
@@ -98,9 +98,7 @@
             para a próxima temporada.
           </p>
 
-          <button class="botao">
-            Ler Mais
-          </button>
+          
 
         </div>
 
@@ -109,7 +107,7 @@
       <!-- CARD 3 -->
       <div class="card-noticia">
 
-        <img src="../assets/imgs/noticia3.jpg" alt="">
+        <img src="https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1PK1HLe03fe1dZmlHNWu6r/0203060715fc79670d455c76fb6e00a6/R6S_Understanding_Anti-Cheat_Header.png" alt="">
 
         <div class="conteudo">
 
@@ -124,9 +122,7 @@
             de jogadores trapaceando.
           </p>
 
-          <button class="botao">
-            Ler Mais
-          </button>
+        
 
         </div>
 
@@ -135,7 +131,7 @@
       <!-- CARD 4 -->
       <div class="card-noticia">
 
-        <img src="../assets/imgs/noticia4.jpg" alt="">
+        <img src="https://s2-ge.glbimg.com/D0AGEQQ-eDDrKiV8-4WiZ1tLuNk=/0x0:950x535/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2023/N/A/KXwYJAT4ejgwwS3TljHg/rainbow-is-magic.png" alt="">
 
         <div class="conteudo">
 
@@ -150,9 +146,7 @@
             para os jogadores.
           </p>
 
-          <button class="botao">
-            Ler Mais
-          </button>
+        
 
         </div>
 
@@ -165,3 +159,6 @@
 </body>
 
 </html>
+<script>
+    h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+</script>

@@ -7,12 +7,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('../assets/imgs/foto_index_fundo.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.85),
+     rgba(0, 0, 0, 0.85)), 
+     url('../assets/imgs/foto_index_fundo.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-repeat: no-repeat;
-    overflow: hidden;
 }
 
 .login {
@@ -43,7 +43,7 @@ body {
 }
 
 #logo {
-    width: 100px;
+    width: 80px;
     height: auto;
     align-self: center;
     margin-bottom: 10px;
@@ -126,4 +126,8 @@ body {
     margin-top: 15px;
     text-align: center;
     font-size: 0.75rem;
+}
+a {
+    color: inherit;
+    text-align: center;
 }

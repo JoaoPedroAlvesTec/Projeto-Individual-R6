@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>R6 Quiz</title>
+  <title>Quiz R6</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/quiz.css">
 
@@ -35,7 +35,12 @@
 
       <div class="navegacao active">
         <img src="../assets/icon/news.png" class="icons">
-        <a href="#">NOTÍCIAS</a>
+        <a href="noticias.html">NOTÍCIAS</a>
+      </div>
+
+      <div class="navegacao active">
+        <img src="../assets/icon/chat.png" class="icons">
+        <a href="chat.html">BATE PAPO</a>
       </div>
 
     </nav>
@@ -48,7 +53,7 @@
   <main class="main">
 
     <div id="bloqueado" style="display:none; text-align:center;">
-      <h2 id="h2_fim" style="color:#ff9d00 ;">Essas foram suas escolhas! Olhe o nosso ranking e compare suas respostas</h2>
+      <h2 id="h2_fim" style="color:#ff9d00 ;">Essas foram suas escolhas! Olhe o nosso ranking e compare suas respostas !</h2>
     </div>
 
    <!-- 🔥 TELA INICIAL --> 
@@ -105,6 +110,7 @@
         document.getElementById("barra").style.width = porcentagem + "%";
 
         document.getElementById("quizContainer").display = "block";
+
         const container = document.querySelector(".cards");
         container.innerHTML = "";
 

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat R6</title>
+  <link rel="stylesheet" href="../css/chat.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/alerta.js"></script>
+</head>
+
+<body onload="validarSessao(), atualizarFeed()" style="background-color: #161618;">
+
+  <aside class="sidebar">
+    <div class="profile">
+      <img src="../assets/imgs/logo_png.png" alt="">
+      <hr><br>
+      <h3 id="h3_usuario" style="color:#00e0c6 ;"></h3>
+    </div>
+
+    <nav class="menu">
+      <div class="navegacao">
+        <img src="../assets/icon/quiz.png" class="icons">
+        <a href="quiz.html">QUIZ</a>
+      </div>
+
+      <div class="navegacao">
+        <img src="../assets/icon/ranking.png" class="icons">
+        <a href="dashboard.html">RANKING</a>
+      </div>
+
+      <div class="navegacao active">
+        <img src="../assets/icon/news.png" class="icons">
+        <a href="noticias.html">NOTÍCIAS</a>
+      </div>
+      <div class="navegacao active">
+        <img src="../assets/icon/chat.png" class="icons">
+        <a href="noticias.html">BATE PAPO</a>
+      </div>
+    </nav>
+    <div class="logout">
+      <button id="btn_sair" onclick="limparSessao()">Sair</button>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="dash-right">
+      <div class="container">
+
+        <div class="top">
+          <h1>Bate Papo</h1>
+          <p>Debata sobre os resultados com outros usuarios</p>
+        </div>
+
+        <div class="div-form">
+          <form id="form_postagem" method="post" onsubmit="return publicar()">
+            <label>
+              Título:
+              <br>
+              <input name="titulo" id="titulo" maxlength="100" type="text">
+            </label>
+            <br>
+            <br>
+            <label>
+              Descrição (máximo de 250 caracteres):
+              <br>
+              <textarea name="descricao" id="textarea_descricao" maxlength="250" rows="5"></textarea>
+            </label>
+            <br>
+            <br>
+            <button>Enviar</button>
+          </form>
+        </div>
+        <h1>Comentarios</h1>
+        <div class="div-results">
+          <div id="feed_container" class="feed-container">
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
+<script>
+
+  var id_usuario = sessionStorage.ID_USUARIO;
+
+  h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  function limparFormulario() {
+    document.getElementById("form_postagem").reset();
+  }
+
+  function publicar() {
+    var idUsuario = sessionStorage.ID_USUARIO;
+
+    var corpo = {
+      titulo: form_postagem.titulo.value,
+      descricao: form_postagem.descricao.value
+    }
+
+    fetch(`/chat/publicar/${idUsuario}`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(corpo)
+    }).then(function (resposta) {
+
+      console.log("resposta: ", resposta);
+
+      if (resposta.ok) {
+        window.location = "/dashboard/chat.html";
+        limparFormulario();
+
+      } else if (resposta.status == 404) {
+        window.alert("Deu 404!");
+      } else {
+        throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+      }
+    }).catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
+
+    return false;
+  }
+
+  function editar(idAviso) {
+    sessionStorage.ID_POSTAGEM_EDITANDO = idAviso;
+    console.log("cliquei em editar - " + idAviso);
+    window.location = "/dashboard/edicao-chat.html"
+
+  }
+
+  function deletar(idAviso) {
+    console.log("Criar função de apagar post escolhido - ID" + idAviso);
+    fetch(`/chat/deletar/${idAviso}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(function (resposta) {
+
+      if (resposta.ok) {
+        window.alert("Post deletado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
+        window.location = "/dashboard/chat.html"
+      }
+       else if (resposta.status == 404) {
+        window.alert("Deu 404!");
+      } 
+      else {
+        throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+      }
+    }).catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
+  }
+
+  function atualizarFeed() {
+    fetch("/chat/listar").then(function (resposta) {
+      if (resposta.ok) {
+
+
+        if (resposta.status == 204) {
+          var feed = document.getElementById("feed_container");
+          var mensagem = document.createElement("span");
+          mensagem.innerHTML = "Nenhum resultado encontrado."
+          feed.appendChild(mensagem);
+          throw "Nenhum resultado encontrado!!";
+        }
+
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+          var feed = document.getElementById("feed_container");
+          feed.innerHTML = "";
+
+          for (let i = 0; i < resposta.length; i++) {
+            var publicacao = resposta[i];
+
+            // criando e manipulando elementos do HTML via JavaScript
+            var divPublicacao = document.createElement("div");
+            var spanID = document.createElement("span");
+            var spanTitulo = document.createElement("span");
+            var spanNome = document.createElement("span");
+            var divDescricao = document.createElement("div");
+            var divButtons = document.createElement("div");
+
+            if (id_usuario != resposta[i].idUsuario) {
+
+              spanID.innerHTML = "ID: <b>" + publicacao.idAviso + "</b>";
+              spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
+              spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
+              divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
+              // btnEditar.innerHTML = "Editar";
+              // btnDeletar.innerHTML = "Deletar";
+
+              divPublicacao.className = "publicacao";
+              spanTitulo.id = "inputNumero" + publicacao.idAviso;
+              spanNome.className = "publicacao-nome";
+              spanTitulo.className = "publicacao-titulo";
+              divDescricao.className = "publicacao-descricao";
+
+              // divButtons.className = "div-buttons"
+
+              // btnEditar.className = "publicacao-btn-editar"
+              // btnEditar.id = "btnEditar" + publicacao.idAviso;
+              // btnEditar.setAttribute("onclick", `editar(${publicacao.idAviso})`);
+
+              // btnDeletar.className = "publicacao-btn-editar"
+              // btnDeletar.id = "btnDeletar" + publicacao.idAviso;
+              // btnDeletar.setAttribute("onclick", `deletar(${publicacao.idAviso})`);
+
+              divPublicacao.appendChild(spanID);
+              divPublicacao.appendChild(spanNome);
+              divPublicacao.appendChild(spanTitulo);
+              divPublicacao.appendChild(divDescricao);
+              divPublicacao.appendChild(divButtons);
+              // divButtons.appendChild(btnEditar);
+              // divButtons.appendChild(btnDeletar);
+              feed.appendChild(divPublicacao);
+
+              console.log("to no if")
+            }
+
+            else {
+
+              var btnEditar = document.createElement("button");
+              var btnDeletar = document.createElement("button");
+
+              console.log("to no else")
+
+              spanID.innerHTML = "ID: <b>" + publicacao.idAviso + "</b>";
+              spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
+              spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
+              divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
+              btnEditar.innerHTML = "Editar";
+              btnDeletar.innerHTML = "Deletar";
+
+              divPublicacao.className = "publicacao";
+              spanTitulo.id = "inputNumero" + publicacao.idAviso;
+              spanNome.className = "publicacao-nome";
+              spanTitulo.className = "publicacao-titulo";
+              divDescricao.className = "publicacao-descricao";
+
+              divButtons.className = "div-buttons"
+
+              btnEditar.className = "publicacao-btn-editar"
+              btnEditar.id = "btnEditar" + publicacao.idAviso;
+              btnEditar.setAttribute("onclick", `editar(${publicacao.idAviso})`);
+
+              btnDeletar.className = "publicacao-btn-editar"
+              btnDeletar.id = "btnDeletar" + publicacao.idAviso;
+              btnDeletar.setAttribute("onclick", `deletar(${publicacao.idAviso})`);
+
+              divPublicacao.appendChild(spanID);
+              divPublicacao.appendChild(spanNome);
+              divPublicacao.appendChild(spanTitulo);
+              divPublicacao.appendChild(divDescricao);
+              divPublicacao.appendChild(divButtons);
+              divButtons.appendChild(btnEditar);
+              divButtons.appendChild(btnDeletar);
+              feed.appendChild(divPublicacao);
+            }
+          }
+        });
+      } else {
+        throw ('Houve um erro na API!');
+      }
+    }).catch(function (resposta) {
+      console.error(resposta);
+    });
+  }
+
+</script>
