@@ -51,7 +51,7 @@
 
     <div class="top">
       <h1>DASHBOARD</h1>
-      <p>Veja as escolhas mais populares do quiz</p>
+      <p>Veja os resultados mais populares e interaja</p>
     </div>
 
     <div class="graficos">
@@ -65,13 +65,13 @@
 
         <div class="kpi">
           <h2>Perfil Predominante</h2>
-          <span style="color: green;" id="kpiMaisEscolhida"></span>
+          <span style="color: #ff9d00;" id="kpiMaisEscolhida"></span>
           <p id="kpiMaisEscolhidaPergunta"></p>
         </div>
 
         <div class="kpi">
           <h2>Perfil Menos Frequente</h2>
-          <span style="color: red;" id="kpiMenosEscolhida"> </span>
+          <span style="color: #00c2aa;" id="kpiMenosEscolhida"> </span>
           <p id="kpiMenosEscolhidaPergunta"></p>
         </div>
 
@@ -81,7 +81,7 @@
         <div class="filtro">
         <button class="btn_2"></button>
         </div>
-        <h3>Alternativas mais escolhidas</h3>
+        <h3>Porcentagem De Cada Perfil</h3>
         <canvas id="graficoGeral"></canvas>
       </div>
       
@@ -230,7 +230,7 @@
       .then(data => {
 
         kpiMaisEscolhida.innerHTML = data[0].nome;
-        kpiMaisEscolhidaPergunta.innerHTML = `Numero de Resultados (${data[0].quantidade}) `;
+        kpiMaisEscolhidaPergunta.innerHTML = `Numero de Resultados: ${data[0].quantidade} `;
 
       })
       .catch(err => console.error(err));
@@ -245,7 +245,7 @@
       .then(data => {
 
         kpiMenosEscolhida.innerHTML = data[0].nome;
-        kpiMenosEscolhidaPergunta.innerHTML = `Numero de Resultados (${data[0].quantidade})`;
+        kpiMenosEscolhidaPergunta.innerHTML = `Numero de Resultados: ${data[0].quantidade}`;
 
       })
       .catch(err => console.error(err));
@@ -263,7 +263,7 @@
       "#00ffff"
     ];
     graficoGeral = new Chart(ctx, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: labels,
         datasets: [{

@@ -169,7 +169,7 @@ body {
   border: 1px solid rgba(0, 255, 255, .5);
   box-shadow:
         0 0 10px rgba(0, 255, 255, .3);
-  cursor: pointer;
+  cursor: auto;
   width: 100%;
   height: 40px;
 }
@@ -239,7 +239,7 @@ body {
   flex: 1;
   background: #121821;
   border-radius: 16px;
-  padding: 30px;
+  padding:10px;
   border: 1px solid rgba(255, 255, 255, 0.05);
 
   display: flex;
