@@ -17,7 +17,12 @@
   <aside class="sidebar">
 
     <div class="profile">
-      <img src="../assets/imgs/logo_png.png" alt="">
+      <div class="foto_barra">
+      <img id="foto_barra" src="" alt="">
+      </div>
+      <a href="perfil.html">
+                <p id="p_perfil">Atualizar Perfil</p>
+            </a>
       <hr><br>
       <h3 id="h3_usuario" style="color:#00e0c6;">PlayerOne</h3>
     </div>
@@ -57,7 +62,6 @@
       </h2>
     </div>
 
-    <!-- 🔥 TELA INICIAL -->
     <div id="inicioQuiz" class="inicio" style="display: none;">
       <h1 style="color: #ff9d00;">R6 QUIZ</h1>
       <p>Descubra seu estilo de jogo no Rainbow Six</p>
@@ -90,6 +94,8 @@
 <script>
 
   h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+  foto_barra.src = sessionStorage.IMG_USUARIO;
+
   let perguntaAtual = 1;
   const totalPerguntas = 10;
   let idTentativa;
@@ -331,11 +337,12 @@
                 <img src="${data.resultado.img}">
 
                 <h1>${data.resultado.nome}</h1>
-
+                
                 <p>${data.resultado.descricao}</p>
 
             </div>
         `;
+        sessionStorage.USUARIO_RESULTADO = data.resultado.nome
       })
 
       .catch(err => {

@@ -6,7 +6,8 @@ CREATE TABLE usuario (
     nome VARCHAR(45) NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL,
     email VARCHAR(95) UNIQUE NOT NULL,
-    senha VARCHAR(45) NOT NULL
+    senha VARCHAR(45) NOT NULL,
+    img_usuario VARCHAR(100) DEFAULT '../assets/imgs/logo_png.png'
 );
 
 CREATE TABLE resultado (

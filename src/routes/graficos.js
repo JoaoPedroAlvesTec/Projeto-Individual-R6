@@ -7,6 +7,13 @@ router.get("/estatisticas/:idPergunta", function (req, res) {
     graficosController.estatisticasPergunta(req, res);
 });
 
+router.get("/estatisticasResultado/:usuario_resultado", function (req, res) {
+    graficosController.estatisticasResultado(req, res);
+});
+
+router.get("/estatisticas-geral", function (req, res) {
+    graficosController.estatisticasGeral(req, res);
+});
 router.get("/estatisticas-geral", function (req, res) {
     graficosController.estatisticasGeral(req, res);
 });

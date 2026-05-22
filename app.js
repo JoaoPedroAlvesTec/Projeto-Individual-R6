@@ -21,6 +21,8 @@ var graficosRouter = require("./src/routes/graficos");
 var cpfRouter = require("./src/routes/cpf");
 var quizRouter = require("./src/routes/quiz");
 var chatRouter = require("./src/routes/chat");
+var perfilRouter = require("./src/routes/perfil");
+
 
 
 
@@ -36,6 +38,7 @@ app.use("/graficos", graficosRouter);
 app.use("/quiz", quizRouter);
 app.use("/cpf", cpfRouter);
 app.use("/chat", chatRouter);
+app.use("/perfil", perfilRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`

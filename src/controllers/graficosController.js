@@ -20,6 +20,25 @@ function estatisticasPergunta(req, res) {
         });
 }
 
+function estatisticasResultado(req, res) {
+
+    var usuario_resultado = req.params.usuario_resultado;
+
+    if (usuario_resultado == undefined) {
+        res.status(400).send("usuario_resultado undefined!");
+        return;
+    }
+
+    graficosModel.estatisticasResultado(usuario_resultado)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function estatisticasGeral(req, res) {
 
     graficosModel.estatisticasGeral()
@@ -65,5 +84,6 @@ module.exports = {
     estatisticasGeral,
     tentativasTotal,
     menorResultado,
-    maiorResultado
+    maiorResultado,
+    estatisticasResultado
 };

@@ -18,10 +18,28 @@ body {
     display: flex;
     min-height: 100vh;
 }
+.profile a{
+    text-decoration:none;
+    color: #fff;
+}
+#p_perfil{
+    font-size: 12px;
+    cursor: pointer;
+}
+.foto_barra img {
+    width: 70px;
+    height: 70px;
 
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 3px solid transparent;
+
+}
 .sidebar {
     width: 180px;
-    background: #0e131a;
+    background:rgb(7, 15, 30);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -74,18 +92,16 @@ body {
     margin-top: auto;
 }
 
+
 #btn_sair {
     width: 100%;
     height: 40px;
-    background: #121821;
+    background-color: rgba(255,255,255,0.04);
     border: 1px solid rgba(0, 255, 255, .5);
     color: #fff;
     border-radius: 10px;
     cursor: pointer;
-
-    box-shadow:
-        0 0 10px rgba(0, 255, 255, .3);
-
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
     transition: .2s;
 }
 
@@ -121,12 +137,17 @@ body {
 
 .noticias {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns: repeat(2, 400px);
+
     gap: 30px;
+
+    justify-content: center;
 }
 
 .card-noticia {
-    background: #121821;
+    width: 400px;
+    background:rgb(7, 15, 30);
     border-radius: 22px;
     overflow: hidden;
 
@@ -134,8 +155,7 @@ body {
 
     transition: .25s;
 
-    box-shadow:
-        0 0 10px rgba(255, 157, 0, .35);
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
 }
 
 .card-noticia:hover {
@@ -143,13 +163,11 @@ body {
 
     border-color: #00e0c6;
 
-    box-shadow:
-        0 0 20px rgba(0, 224, 198, .25);
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
 }
 
 .card-noticia img {
-    width: 100%;
-    height: 240px;
+    width: 400px;
 }
 
 .conteudo {
@@ -199,8 +217,7 @@ body {
 
     transition: .2s;
 
-    box-shadow:
-        0 0 10px rgba(255, 157, 0, .35);
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
 }
 
 .botao:hover {
@@ -209,6 +226,5 @@ body {
 
     border-color: #00e0c6;
 
-    box-shadow:
-        0 0 15px rgba(0, 224, 198, .5);
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
 }

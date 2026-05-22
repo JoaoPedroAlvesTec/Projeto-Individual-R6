@@ -15,11 +15,15 @@
 
   <aside class="sidebar">
     <div class="profile">
-      <img src="../assets/imgs/logo_png.png" alt="">
+      <div class="foto_barra">
+      <img id="foto_barra" src="" alt="">
+      </div>
+      <a href="perfil.html">
+        <p id="p_perfil">Atualizar Perfil</p>
+      </a>
       <hr><br>
       <h3 id="h3_usuario" style="color:#00e0c6 ;"></h3>
     </div>
-
     <nav class="menu">
       <div class="navegacao">
         <img src="../assets/icon/quiz.png" class="icons">
@@ -91,6 +95,7 @@
   var id_usuario = sessionStorage.ID_USUARIO;
 
   h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+  foto_barra.src = sessionStorage.IMG_USUARIO;
 
   function limparFormulario() {
     document.getElementById("form_postagem").reset();
@@ -150,9 +155,9 @@
         window.alert("Post deletado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
         window.location = "/dashboard/chat.html"
       }
-       else if (resposta.status == 404) {
+      else if (resposta.status == 404) {
         window.alert("Deu 404!");
-      } 
+      }
       else {
         throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
       }
@@ -185,7 +190,6 @@
 
             // criando e manipulando elementos do HTML via JavaScript
             var divPublicacao = document.createElement("div");
-            var spanID = document.createElement("span");
             var spanTitulo = document.createElement("span");
             var spanNome = document.createElement("span");
             var divDescricao = document.createElement("div");
@@ -193,7 +197,6 @@
 
             if (id_usuario != resposta[i].idUsuario) {
 
-              spanID.innerHTML = "ID: <b>" + publicacao.idchat + "</b>";
               spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
               spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
               divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
@@ -201,7 +204,6 @@
               // btnDeletar.innerHTML = "Deletar";
 
               divPublicacao.className = "publicacao";
-              spanTitulo.id = "inputNumero" + publicacao.idchat;
               spanNome.className = "publicacao-nome";
               spanTitulo.className = "publicacao-titulo";
               divDescricao.className = "publicacao-descricao";
@@ -216,7 +218,6 @@
               // btnDeletar.id = "btnDeletar" + publicacao.idchat;
               // btnDeletar.setAttribute("onclick", `deletar(${publicacao.idchat})`);
 
-              divPublicacao.appendChild(spanID);
               divPublicacao.appendChild(spanNome);
               divPublicacao.appendChild(spanTitulo);
               divPublicacao.appendChild(divDescricao);
@@ -235,7 +236,6 @@
 
               console.log("to no else")
 
-              spanID.innerHTML = "ID: <b>" + publicacao.idchat + "</b>";
               spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
               spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
               divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
@@ -243,7 +243,6 @@
               btnDeletar.innerHTML = "Deletar";
 
               divPublicacao.className = "publicacao";
-              spanTitulo.id = "inputNumero" + publicacao.idchat;
               spanNome.className = "publicacao-nome";
               spanTitulo.className = "publicacao-titulo";
               divDescricao.className = "publicacao-descricao";
@@ -258,7 +257,6 @@
               btnDeletar.id = "btnDeletar" + publicacao.idchat;
               btnDeletar.setAttribute("onclick", `deletar(${publicacao.idchat})`);
 
-              divPublicacao.appendChild(spanID);
               divPublicacao.appendChild(spanNome);
               divPublicacao.appendChild(spanTitulo);
               divPublicacao.appendChild(divDescricao);

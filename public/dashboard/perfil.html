@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias R6</title>
+
+    <link rel="stylesheet" href="../css/perfil.css">
+    <script src="../js/sessao.js"></script>
+</head>
+
+<body onload="carregarPerfil()">
+
+    <aside class="sidebar">
+
+        <div class="profile">
+            <div class="foto_barra">
+                <img id="foto_barra" src="" alt="">
+            </div>
+            <a href="perfil.html">
+                <p id="p_perfil">Atualizar Perfil</p>
+            </a>
+            <hr><br>
+            <h3 id="h3_usuario" style="color:#00e0c6;"></h3>
+        </div>
+
+        <nav class="menu">
+            <div class="navegacao">
+                <img src="../assets/icon/quiz.png" class="icons">
+                <a href="quiz.html">QUIZ</a>
+            </div>
+
+            <div class="navegacao">
+                <img src="../assets/icon/ranking.png" class="icons">
+                <a href="dashboard.html">RANKING</a>
+            </div>
+
+            <div class="navegacao active">
+                <img src="../assets/icon/news.png" class="icons">
+                <a href="noticias.html">NOTÍCIAS</a>
+            </div>
+            <div class="navegacao active">
+                <img src="../assets/icon/chat.png" class="icons">
+                <a href="chat.html">BATE PAPO</a>
+            </div>
+
+        </nav>
+
+        <div class="logout">
+            <button id="btn_sair" onclick="limparSessao()">Sair</button>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="top">
+            <h1>Perfil</h1>
+            <p>Atualize seu perfil</p>
+        </div>
+
+        <div class="perfil_container">
+
+            <div class="perfil_resumo">
+
+                <h2>Resumo do Perfil</h2>
+
+                <div class="foto_perfil">
+                    <img id="img_foto_perfil" src="" alt="">
+                </div>
+
+                <h1 id="h1_nome"></h1>
+
+                <div class="info_usuario">
+
+                    <div class="info_box">
+                        <span>CPF</span>
+                        <p id="p_cpf"></p>
+                    </div>
+
+                    <div class="info_box">
+                        <span>E-mail</span>
+                        <p id="p_email"></p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="perfil_editar">
+
+                <h2>Escolha sua foto de perfil</h2>
+
+                <div class="fotos_opcoes">
+
+                    <img src="../assets/imgs/doka.png">
+
+                    <img src="../assets/imgs/twitch.png">
+
+                    <img src="../assets/imgs/sledge.png">
+
+                    <img src="../assets/imgs/kapkan.png">
+
+                    <img src="../assets/imgs/montagne.png">
+
+                    <img src="../assets/imgs/pulse.png">
+
+                </div>
+
+                <div class="linha"></div>
+
+                <h2>Atualize suas informações</h2>
+
+                <div class="inputs_dupla">
+
+                    <div class="input_box">
+                        <label>Nome</label>
+                        <input type="text" id="input_nome" placeholder="Digite seu nome">
+                    </div>
+
+                    <div class="input_box">
+                        <label>E-mail</label>
+                        <input type="text" id="input_email" placeholder="Digite seu e-mail">
+                    </div>
+
+                </div>
+
+                <div class="linha"></div>
+
+                <h2>Verifique sua senha</h2>
+
+                <div class="input_box">
+                    <label>Senha atual</label>
+                    <input type="text" id="input_senha" placeholder="Digite sua senha">
+                </div>
+
+                <button class="btn_salvar" onclick="atualizarPerfil()">
+                    Salvar alterações
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+</body>
+
+</html>
+<script>
+
+    h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+    let id_usuario = sessionStorage.ID_USUARIO
+    let fotoSelecionada = "";
+    let senha;
+      
+    const fotos = document.querySelectorAll(".fotos_opcoes img");
+
+    console.log(fotos)
+
+    fotos.forEach(foto => {
+
+        foto.addEventListener("click", () => {
+
+            fotos.forEach(img => {
+                img.classList.remove("foto_select");
+            });
+
+            foto.classList.add("foto_select");
+
+            fotoSelecionada = foto.getAttribute("src");
+            
+            console.log(fotoSelecionada);
+
+        });
+
+    });
+
+    function atualizarPerfil() {
+
+    let nome = document.getElementById("input_nome").value;
+
+    let email = document.getElementById("input_email").value;
+
+    let senha = document.getElementById("input_senha").value;
+
+    let id_usuario = sessionStorage.ID_USUARIO;
+
+    fetch("/perfil/atualizarPerfil", {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            id_usuario: id_usuario,
+            nome: nome,
+            email: email,
+            senha: senha,
+            img_usuario: fotoSelecionada
+
+        })
+
+    })
+    .then(res => {
+        if(res.ok){
+            return res.json();
+        } else {
+
+            return res.text().then(texto => {
+                throw new Error(texto);
+            });
+        }
+
+    })
+
+    .then(data => {
+
+        alert("Perfil atualizado!");
+
+        sessionStorage.IMG_USUARIO = fotoSelecionada ;
+        
+        carregarPerfil();
+
+    })
+
+    .catch(err => {
+
+        console.error(err);
+
+        alert(err.message);
+
+    });
+}
+    function carregarPerfil() {
+
+        fetch(`/perfil/carregarPerfil/${id_usuario}`)
+            .then(res => res.json())
+            .then(valores => {
+
+                document.getElementById("foto_barra").src = valores.img_usuario;
+                document.getElementById("img_foto_perfil").src = valores.img_usuario;
+                document.getElementById("p_cpf").innerText = valores.cpf;
+                document.getElementById("p_email").innerText = valores.email;
+                document.getElementById("h1_nome").innerText = valores.nome;
+
+                senha = valores.senha;
+
+            })
+            .catch(err => {
+                console.error("Erro ao carregar pergunta:", err);
+            });
+    }
+</script>

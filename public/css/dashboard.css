@@ -21,7 +21,7 @@ body {
 
 .sidebar {
   width: 180px;
-  background: #0e131a;
+  background:rgb(7, 15, 30);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -53,20 +53,18 @@ body {
   font-size: 14px;
 }
 
+
 #btn_sair {
-  width: 100%;
-  height: 40px;
-  background: #121821;
-  border: 1px solid rgba(0, 255, 255, .5);
-  color: #fff;
-  border-radius: 10px;
-  cursor: pointer;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0, 255, 255, .5);
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 
-  box-shadow:
-    0 0 10px rgba(0, 255, 255, .3);
-
-  transition: .2s;
-
+    box-shadow:0 0 10px rgba(0, 255, 255, .3);
+    transition: .2s;
 }
 #btn_sair:hover {
     background: #00e0c6;
@@ -136,12 +134,12 @@ body {
   border-radius: 8px;
    border-width: 1px;
   border-style: solid;
-  background: #121821;
+  background-color: rgba(255,255,255,0.04);
   color: #aaa;
   font-size: 16px;
   text-align: center;
-  border-color: #ff9d00;
-  box-shadow: 0 0 10px rgb(255 157 0 / 70%);
+  border: 1px solid rgba(0, 255, 255, .5);
+  box-shadow:0 0 10px rgba(0, 255, 255, .3);
   font-weight: bold;
 }
 
@@ -150,16 +148,34 @@ body {
   color: #aaa;
   font-size: 16px;
   text-align: center;
-  background-color: #121821;
+  background-color: rgba(255,255,255,0.04);
   border-radius: 8px;
-  border-color: #ff9d00; 
+  border: 1px solid rgba(0, 255, 255, .5);
   border-width: 1px;
   border-style: solid;
-  box-shadow: 0 0 10px rgb(255 157 0 / 70%);
+  box-shadow:0 0 10px rgba(0, 255, 255, .3);
   cursor: pointer;
   width: 50%;
 }
+.profile a{
+    text-decoration:none;
+    color: #fff;
+}
+#p_perfil{
+    font-size: 12px;
+    cursor: pointer;
+}
+.foto_barra img {
+    width: 70px;
+    height: 70px;
 
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 3px solid transparent;
+
+}
 .btn_2{
   color: white;
   background-color: #121821;
@@ -189,7 +205,7 @@ body {
 }
 
 .grafico {
-  background: #121821;
+  background:rgb(7, 15, 30);
   border-radius: 16px;
   padding: 25px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -206,11 +222,18 @@ body {
 }
 
 .topo {
-  box-shadow: 0 0 10px 3px rgb(255 157 0 / 70%);
+  box-shadow:0 0 10px rgba(0, 255, 255, .3);
 }
 
 .baixo {
-  box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.6);
+  box-shadow:0 0 10px rgba(0, 255, 255, .3);
+}
+
+.grafico_resultado {
+    width: 100%;
+    max-width: 1125px;
+    height: 400px;
+    flex: none;
 }
 
 .grafico h3 {
@@ -221,11 +244,8 @@ body {
   text-align: center;
 }
 
-/* Container interno para o canvas respirar sem bugar */
 .grafico canvas {
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 320px; /* Limita a altura do elemento gráfico interno */
+  display: block;
 }
 
 
@@ -237,7 +257,7 @@ body {
 
 .kpi {
   flex: 1;
-  background: #121821;
+  background:rgb(7, 15, 30);
   border-radius: 16px;
   padding:10px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -246,7 +266,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.7);
+  box-shadow: 0 0 10px rgb(255 157 0 / .4);
 }
 
 .kpi h2 {
@@ -270,3 +290,9 @@ body {
   text-align: center;
 }
 
+.chart-container {
+  position: relative; 
+  width: 100%;
+  height: 100%;      
+  max-height: 280px; 
+}

@@ -12,11 +12,16 @@
 </head>
 
 <body
-  onload="validarSessao(), carregarGraficoPergunta(1), carregarGraficoGeral(), carregarKpiTentativas(), carregarMaiorResultado(), carregarMenorResultado()">
+  onload="validarSessao(), carregarGraficoPergunta(1), carregarGraficoResultado(sessionStorage.USUARIO_RESULTADO), carregarGraficoGeral(), carregarKpiTentativas(), carregarMaiorResultado(), carregarMenorResultado(), atualizar()">
 
   <aside class="sidebar">
     <div class="profile">
-      <img src="../assets/imgs/logo_png.png" alt="">
+      <div class="foto_barra">
+        <img id="foto_barra" src="" alt="">
+      </div>
+      <a href="perfil.html">
+        <p id="p_perfil">Atualizar Perfil</p>
+      </a>
       <hr><br>
       <h3 id="h3_usuario" style="color:#00e0c6 ;"></h3>
     </div>
@@ -79,31 +84,41 @@
 
       <div class="grafico baixo">
         <div class="filtro">
-        <button class="btn_2"></button>
+          <button class="btn_2"></button>
         </div>
         <h3>Porcentagem De Cada Perfil</h3>
-        <canvas id="graficoGeral"></canvas>
+        <div class="chart-container">
+          <canvas id="graficoGeral"></canvas>
+        </div>
       </div>
-      
+
       <div class="grafico topo">
         <div class="filtro">
-        <select id="selectPergunta">
-          <option value="1">Pergunta 1</option>
-          <option value="2">Pergunta 2</option>
-          <option value="3">Pergunta 3</option>
-          <option value="4">Pergunta 4</option>
-          <option value="5">Pergunta 5</option>
-          <option value="6">Pergunta 6</option>
-          <option value="7">Pergunta 7</option>
-          <option value="8">Pergunta 8</option>
-          <option value="9">Pergunta 9</option>
-          <option value="10">Pergunta 10</option>
-        </select>
-
-        <button class="btn" onclick="filtrarPergunta()">Confirmar</button>
-      </div>
+          <select id="selectPergunta">
+            <option value="1">Pergunta 1</option>
+            <option value="2">Pergunta 2</option>
+            <option value="3">Pergunta 3</option>
+            <option value="4">Pergunta 4</option>
+            <option value="5">Pergunta 5</option>
+            <option value="6">Pergunta 6</option>
+            <option value="7">Pergunta 7</option>
+            <option value="8">Pergunta 8</option>
+            <option value="9">Pergunta 9</option>
+            <option value="10">Pergunta 10</option>
+          </select>
+          <button class="btn" onclick="filtrarPergunta()">Confirmar</button>
+        </div>
         <h3>Distribuição de Respostas por Pergunta</h3>
-        <canvas id="graficoPergunta"></canvas>
+        <div class="chart-container">
+          <canvas id="graficoPergunta"></canvas>
+        </div>
+      </div>
+
+      <div class="grafico grafico_resultado baixo">
+        <h3>Alternativas Mais Escolhidas Com Base No Seu Perfil</h3>
+        <div class="chart-container">
+          <canvas id="graficoResultado"></canvas>
+        </div>
       </div>
     </div>
 
@@ -113,7 +128,15 @@
 
 </html>
 <script>
-  h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  let usuario_resultado = sessionStorage.USUARIO_RESULTADO
+
+
+  function atualizar() {
+    h3_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+    foto_barra.src = sessionStorage.IMG_USUARIO;
+  }
+
 
   let graficoPergunta;
 
@@ -282,6 +305,85 @@
             labels: { color: "#fff" }
           }
         },
+      }
+    });
+  }
+
+  function atualizarGrafico() {
+    let idPergunta = document.getElementById("selectPergunta").value;
+    carregarGraficoPergunta(idPergunta);
+  }
+
+
+  function carregarGraficoResultado(usuario_resultado) {
+    fetch(`/graficos/estatisticasResultado/${usuario_resultado}`)
+      .then(res => res.json())
+      .then(data => {
+
+        console.log(data);
+
+        let labels = [];
+        let valores = [];
+
+        data.forEach(item => {
+
+          labels.push("P"+ item.id_pergunta +" Alternativa "+ item.texto);
+
+          valores.push(item.total_escolhas);
+
+        });
+
+        renderizarGraficoResultado(labels, valores);
+      })
+      .catch(err => console.error(err));
+  }
+
+  let graficoResultado;
+
+  function renderizarGraficoResultado(labels, valores) {
+
+    if (graficoResultado) {
+      graficoResultado.destroy();
+    }
+
+
+    const ctx = document.getElementById("graficoResultado");
+
+    const cores = [
+      "#ff9d00",
+      "#00ffff"
+    ];
+    graficoResultado = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Mais escolhidos por pergunta",
+          data: valores,
+          backgroundColor: cores
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: "#fff" },
+            display:false
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: "#aaa" }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: "#aaa",
+              stepSize: 1
+            }
+          }
+        }
       }
     });
   }
